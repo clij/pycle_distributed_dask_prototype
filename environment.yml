@@ -1,0 +1,8 @@
+name: clijd
+channels:
+  - conda-forge
+dependencies:
+  - dask
+  - pyclesperanto-prototype
+  - scikit-image
+  - zarr
