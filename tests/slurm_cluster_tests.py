@@ -8,7 +8,7 @@ def run_connected_components_test():
     main(data, workflow, tile_arrangement, execution_config)
 
 
-def run_guassian_filter_test():
+def run_gaussian_filter_test():
     data = "./test_data/blobs.tiff"
     props = {"sigma": 10.0}
     workflow = {0: {"gaussian_filter": props}}
