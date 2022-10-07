@@ -3,6 +3,7 @@ channels:
   - conda-forge
 dependencies:
   - dask
+  - dask-jobqueue
   - pyclesperanto-prototype
-  - scikit-image
   - zarr
+  - ocl-icd-system
