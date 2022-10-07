@@ -2,8 +2,10 @@ name: clijd
 channels:
   - conda-forge
 dependencies:
+  - python=3.10
   - dask
   - dask-jobqueue
+  - dasl-image
   - pyclesperanto-prototype
   - zarr
   - ocl-icd-system

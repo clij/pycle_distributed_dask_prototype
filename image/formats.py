@@ -35,8 +35,18 @@ def validate_or_enforce_zarr(source: str, save_path: str = None, chunk_formats: 
             chunk_formats = (100, 100, 1)
         else:
             image_size = image.shape
-            chunk_formats = (math.ceil(image_size[0] / chunk_formats[0]), math.ceil(image_size[1] / chunk_formats[1]),
-                             math.ceil(image_size[2] / chunk_formats[2]))
+            if len(image_size) == 2:
+                chunk_formats = (
+                    math.ceil(image_size[0] / chunk_formats[0]),
+                    math.ceil(image_size[1] / chunk_formats[1]),
+                    1
+                )
+            else:
+                chunk_formats = (
+                    math.ceil(image_size[0] / chunk_formats[0]),
+                    math.ceil(image_size[1] / chunk_formats[1]),
+                    math.ceil(image_size[2] / chunk_formats[2])
+                )
 
         # Create a compressor for the zarr image and save it to disk
         compressor = Blosc(cname='zstd', clevel=3, shuffle=Blosc.BITSHUFFLE)
@@ -49,8 +59,18 @@ def validate_or_enforce_zarr(source: str, save_path: str = None, chunk_formats: 
         # Optional chunk size
         if chunk_formats:
             image_size = zarray.shape
-            chunk_formats = (math.ceil(image_size[0] / chunk_formats[0]), math.ceil(image_size[1] / chunk_formats[1]),
-                             math.ceil(image_size[2] / chunk_formats[2]))
+            if len(image_size) == 2:
+                chunk_formats = (
+                    math.ceil(image_size[0] / chunk_formats[0]),
+                    math.ceil(image_size[1] / chunk_formats[1]),
+                    1
+                )
+            else:
+                chunk_formats = (
+                    math.ceil(image_size[0] / chunk_formats[0]),
+                    math.ceil(image_size[1] / chunk_formats[1]),
+                    math.ceil(image_size[2] / chunk_formats[2])
+                )
 
             # No need to rechunk if its already correct
             if chunk_formats != zarray.chunks:
