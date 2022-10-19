@@ -3,7 +3,7 @@ import os.path
 
 import dask.array as da
 import zarr
-from imagecodecs.numcodecs import Blosc
+from numcodecs import Blosc
 
 from skimage.io import imread
 
@@ -18,6 +18,8 @@ def validate_or_enforce_zarr(source: str, save_path: str = None, chunk_formats: 
 
     :return: the zarr file as a dask array, the actual pixel sizes of the chunks
     """
+    print(os.listdir("."))
+
     if not os.path.isfile(source):
         raise ValueError("The source provided was not a valid path.")
 
@@ -32,14 +34,16 @@ def validate_or_enforce_zarr(source: str, save_path: str = None, chunk_formats: 
 
         # Optional chunk size
         if not chunk_formats:
-            chunk_formats = (100, 100, 1)
+            if len(image_size) == 2:
+                chunk_formats = (100, 100)
+            else:
+                chunk_formats = (100, 100, 1)
         else:
             image_size = image.shape
             if len(image_size) == 2:
                 chunk_formats = (
                     math.ceil(image_size[0] / chunk_formats[0]),
                     math.ceil(image_size[1] / chunk_formats[1]),
-                    1
                 )
             else:
                 chunk_formats = (
@@ -63,7 +67,6 @@ def validate_or_enforce_zarr(source: str, save_path: str = None, chunk_formats: 
                 chunk_formats = (
                     math.ceil(image_size[0] / chunk_formats[0]),
                     math.ceil(image_size[1] / chunk_formats[1]),
-                    1
                 )
             else:
                 chunk_formats = (

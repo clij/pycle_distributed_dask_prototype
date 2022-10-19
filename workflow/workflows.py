@@ -49,4 +49,4 @@ def run_workflow(data_path, data, directives, tile_settings, save_intermediates=
 
     # Final output
     # TODO: Better name chaining
-    output_zarr_to_directory(data, "workflow_output.zarr", data)
+    output_zarr_to_directory(data_path, "workflow_output.zarr", data)
