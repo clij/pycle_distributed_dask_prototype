@@ -8,10 +8,9 @@
   "job_extra": [
     "--gres gpu:1"
   ],
-  "interface": "ib0",
   "env_setup": [
     "ml Anaconda3",
-    "conda activate /camp/stp/ddt/workings/smithj1/envs/clijd_dask"
+    "conda activate /camp/stp/ddt/working/smithj1/envs/clijd_dask"
   ],
   "walltime": "01:00:00"
 }

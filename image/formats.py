@@ -21,7 +21,7 @@ def validate_or_enforce_zarr(source: str, save_path: str = None, chunk_formats: 
     print(os.listdir("."))
 
     if not os.path.isfile(source):
-        raise ValueError("The source provided was not a valid path.")
+        raise ValueError("The source provided [" + source + "] was not a valid path.")
 
     # Use the current file's directory to save the new zarr file (if required)
     if not save_path:
