@@ -19,6 +19,7 @@
 #     run(data, workflow, tile_arrangement, execution_config)
 from napari_workflows import Workflow
 from napari_workflows._io_yaml_v1 import save_workflow
+from pyclesperanto_prototype import threshold_otsu
 from skimage._shared.filters import gaussian
 
 
@@ -26,7 +27,7 @@ def run_workflow_test():
     data = "./test_data/blobs.tiff"
     workflow = Workflow()
     workflow.set("g1", gaussian, "input", sigma=2)
-    workflow.set("output", gaussian, "g1", sigma=2)
+    workflow.set("output", threshold_otsu, "g1")
     workflow_file_path = "test.yml"
     save_workflow(workflow_file_path, workflow)
     tile_config = ":,:,1"
@@ -39,7 +40,8 @@ def run_workflow_test():
 def run_workflow_tiled_test():
     data = "./test_data/blobs.tiff"
     workflow = Workflow()
-    workflow.set("output", gaussian, "input", sigma=2)
+    workflow.set("g1", gaussian, "input", sigma=2)
+    workflow.set("output", threshold_otsu, "g1")
     workflow_file_path = "test.yml"
     save_workflow(workflow_file_path, workflow)
     tile_config = "5,5,1"
