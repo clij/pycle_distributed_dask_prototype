@@ -18,8 +18,6 @@ def validate_or_enforce_zarr(source: str, save_path: str = None, chunk_formats: 
 
     :return: the zarr file as a dask array, the actual pixel sizes of the chunks
     """
-    print(os.listdir("."))
-
     if not os.path.isfile(source):
         raise ValueError("The source provided [" + source + "] was not a valid path.")
 

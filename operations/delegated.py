@@ -8,7 +8,7 @@ def run_tiled_workflow(data_as_tile, workflow_file=None) -> np.ndarray:
     workflow = load_workflow(workflow_file)
 
     # Add in our tile section as the input
-    workflow.set("input", data_as_tile)
+    workflow.set("input", np.asarray(data_as_tile))
 
     # How do we know the name of the final operation? Assume output for now
     return np.asarray(workflow.get("output"))
