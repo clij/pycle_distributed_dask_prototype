@@ -53,11 +53,11 @@ def dask_setup(execution_config_path: str = None) -> Client | None:
 def run(data_path: str, workflow_json: dict, tile_arrangement: str = None, execution_config_path: str = None, defer_workflow_handling: bool = False):
     # Munge tile arrangement
     if tile_arrangement:
-        tile_arrangement = [int(val) for val in tile_arrangement.split(",")]
+        tile_arrangement = tile_arrangement.split(",")
         if len(tile_arrangement) == 1:
             tile_arrangement = [tile_arrangement[0], tile_arrangement[0], 1]
         elif len(tile_arrangement) == 2:
-            tile_arrangement.append(1)
+            tile_arrangement.append("1")
     else:
         tile_arrangement = None
 

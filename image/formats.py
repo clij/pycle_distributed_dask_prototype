@@ -40,16 +40,31 @@ def validate_or_enforce_zarr(source: str, save_path: str = None, chunk_formats: 
             else:
                 chunk_formats = (100, 100, 1)
         else:
-            if len(image_size) == 2:
+            if chunk_formats[0] == ":":
+                x_size = image_size[0]
+            else:
+                x_size = math.ceil(image_size[0] / int(chunk_formats[0]))
+
+            if chunk_formats[1] == ":":
+                y_size = image_size[1]
+            else:
+                y_size = math.ceil(image_size[1] / int(chunk_formats[1]))
+
+            if len(image_size) == 3:
+                if chunk_formats[2] == ":":
+                    z_size = image_size[2]
+                else:
+                    z_size = math.ceil(image_size[2] / int(chunk_formats[2]))
+
                 chunk_formats = (
-                    math.ceil(image_size[0] / chunk_formats[0]),
-                    math.ceil(image_size[1] / chunk_formats[1]),
+                    x_size,
+                    y_size,
+                    z_size
                 )
             else:
                 chunk_formats = (
-                    math.ceil(image_size[0] / chunk_formats[0]),
-                    math.ceil(image_size[1] / chunk_formats[1]),
-                    math.ceil(image_size[2] / chunk_formats[2])
+                    x_size,
+                    y_size,
                 )
 
         # Create a compressor for the zarr image and save it to disk
@@ -63,16 +78,31 @@ def validate_or_enforce_zarr(source: str, save_path: str = None, chunk_formats: 
         # Optional chunk size
         if chunk_formats:
             image_size = zarray.shape
-            if len(image_size) == 2:
+            if chunk_formats[0] == ":":
+                x_size = image_size[0]
+            else:
+                x_size = math.ceil(image_size[0] / int(chunk_formats[0]))
+
+            if chunk_formats[1] == ":":
+                y_size = image_size[1]
+            else:
+                y_size = math.ceil(image_size[1] / int(chunk_formats[1]))
+
+            if len(image_size) == 3:
+                if chunk_formats[2] == ":":
+                    z_size = image_size[2]
+                else:
+                    z_size = math.ceil(image_size[2] / int(chunk_formats[2]))
+
                 chunk_formats = (
-                    math.ceil(image_size[0] / chunk_formats[0]),
-                    math.ceil(image_size[1] / chunk_formats[1]),
+                    x_size,
+                    y_size,
+                    z_size
                 )
             else:
                 chunk_formats = (
-                    math.ceil(image_size[0] / chunk_formats[0]),
-                    math.ceil(image_size[1] / chunk_formats[1]),
-                    math.ceil(image_size[2] / chunk_formats[2])
+                    x_size,
+                    y_size,
                 )
 
             # No need to rechunk if its already correct
