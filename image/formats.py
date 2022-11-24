@@ -31,6 +31,7 @@ def validate_or_enforce_zarr(source: str, save_path: str = None, chunk_formats: 
     zarr_filename = os.path.join(save_path, file_name + ".zarr")
     if not file_extension == ".zarr":
         image = imread(source)
+        image_size = image.shape
 
         # Optional chunk size
         if not chunk_formats:
@@ -39,7 +40,6 @@ def validate_or_enforce_zarr(source: str, save_path: str = None, chunk_formats: 
             else:
                 chunk_formats = (100, 100, 1)
         else:
-            image_size = image.shape
             if len(image_size) == 2:
                 chunk_formats = (
                     math.ceil(image_size[0] / chunk_formats[0]),

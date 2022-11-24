@@ -1,4 +1,5 @@
 import json
+import os.path
 import sys
 
 from distributed import Client
@@ -47,7 +48,7 @@ def dask_setup(execution_config_path: str = None) -> Client | None:
             return client
 
 
-def run(data_path: str, workflow_json: dict, tile_arrangement: str = None, execution_config_path: str = None, defer_workflow_handling = False):
+def run(data_path: str, workflow_json: dict, tile_arrangement: str = None, execution_config_path: str = None, defer_workflow_handling: str = False):
     # Munge tile arrangement
     if tile_arrangement:
         tile_arrangement = [int(val) for val in tile_arrangement.split(",")]
@@ -82,20 +83,44 @@ def run(data_path: str, workflow_json: dict, tile_arrangement: str = None, execu
 
 
 def process_input_args(arguments: list):
-    data = ""
-    workflow = {""}
+    # Terrible arg parsing simply for hackathon
     tile_arrangement = ""
-    execution_config = ""
+    is_delegate = False
 
-    # TODO
+    if len(arguments) >= 4:
+        print("Not enough input arguments, expect data_path, workflow_path, execution_config_path as a minimum")
 
-    return data, workflow, tile_arrangement, execution_config
+    data = arguments[1]
+    if not os.path.isfile(data):
+        print("Data file not valid")
+        data = None
+
+    workflow_file = arguments[2]
+    if workflow_file.endswith(".json"):
+        with open(workflow_file, 'r') as file:
+            workflow = json.load(workflow_file)
+    elif workflow_file.endswith(".yml"):
+        workflow = workflow_file
+        is_delegate = True
+    else:
+        print("Workflow file not valid")
+        workflow = None
+
+    execution_config = arguments[3]
+    if not os.path.isfile(execution_config):
+        print("Execution Config file not valid")
+        execution_config = None
+
+    if len(arguments) == 5:
+        tile_arrangement = arguments[4]
+
+    return data, workflow, tile_arrangement, execution_config, is_delegate
 
 
 if __name__ == '__main__':
-    data, workflow, tile_arrangement, execution_config = process_input_args(sys.argv)
+    data, workflow, tile_arrangement, execution_config, is_delegate = process_input_args(sys.argv)
     if data is None or workflow is None or tile_arrangement is None or execution_config is None:
         print("One of the required input arguments is missing")
         exit(1)
 
-    run(data, workflow, tile_arrangement, execution_config)
+    run(data, workflow, tile_arrangement, execution_config, defer_workflow_handling=is_delegate)
