@@ -1,4 +1,5 @@
 import dask.array
+import numpy
 
 from napari_workflows._io_yaml_v1 import load_workflow
 
@@ -10,7 +11,7 @@ def run_tiled_workflow(data_as_tile, workflow_file=None):
     workflow.set("input", data_as_tile)
 
     # How do we know the name of the final operation? Assume output for now
-    return workflow.get("output")
+    return numpy.asarray(workflow.get("output"))
 
 
 def run_delegated(workflow, source_data_path, source_data, tile_config, depth=None):
