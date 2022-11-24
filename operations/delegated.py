@@ -18,4 +18,4 @@ def run_delegated(workflow, source_data_path, source_data, tile_config, depth=No
         tile_map = dask.array.map_blocks(run_tiled_workflow, source_data, workflow_file=workflow)
     else:
         tile_map = dask.array.map_overlap(run_tiled_workflow, source_data, depth=depth, boundary='nearest', workflow_file=workflow)
-    return tile_map
+    return tile_map.compute()

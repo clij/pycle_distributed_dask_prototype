@@ -3,6 +3,7 @@ import os.path
 import sys
 
 from distributed import Client
+from skimage.io import imsave
 
 from cluster.slurm import build_slurm_cluster
 from image.formats import validate_or_enforce_zarr, output_zarr_to_directory
@@ -79,7 +80,8 @@ def run(data_path: str, workflow: str, tile_arrangement: str = None, execution_c
     else:
         # Delegate workflow processing
         output = run_delegated(workflow, data_path, data, tile_arrangement)
-        output_zarr_to_directory(data_path, "workflow_output.zarr", output)
+        imsave(os.path.join(data_path, "workflow_output.tiff"), output)
+        # output_zarr_to_directory(data_path, "workflow_output.zarr", output)
 
     # Close out the client
     client.close()
