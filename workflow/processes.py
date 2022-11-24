@@ -17,13 +17,16 @@ def run_process_untiled(source_data: da, directive: str, properties: list) -> da
 
     # This should be a flat 1:1 mapping of directive to pyclesperanto function...
     # TODO: This implementation could change based on how workflows are declared
-    match directive:
-        case "connected_components":
-            return run_connected_components_single(source_data)
-        case "gaussian_filter":
-            return run_gaussian_filter_single(properties, source_data)
-        case _:
-            pass
+    # match directive:
+    #     case "connected_components":
+    if directive == "connected_components":
+        return run_connected_components_single(source_data)
+        # case "gaussian_filter":
+    elif directive == "gaussian_filter":
+        return run_gaussian_filter_single(properties, source_data)
+        # case _:
+    else:
+        return
 
 
 def run_process(source_data: da, directive, properties, tile_config: None) -> da:
@@ -42,10 +45,13 @@ def run_process(source_data: da, directive, properties, tile_config: None) -> da
         return run_process_untiled(source_data, directive, properties)
 
     # Directive dependent execution - this is because there isn't a 1:1 mapping of tile aggregation solutions
-    match directive:
-        case "connected_components":
-            run_connected_components_parallel(source_data, tile_config)
-        case "gaussian_filter":
-            return run_gaussian_filter_parallel(properties, source_data, tile_config)
-        case _:
-            pass
+    # match directive:
+    #     case "connected_components":
+    if directive == "connected_components":
+        return run_connected_components_parallel(source_data, tile_config)
+        # case "gaussian_filter":
+    elif directive == "gaussian_filter":
+        return run_gaussian_filter_parallel(properties, source_data, tile_config)
+        # case _:
+    else:
+        return None

@@ -5,7 +5,7 @@ import sys
 from distributed import Client
 
 from cluster.slurm import build_slurm_cluster
-from image.formats import validate_or_enforce_zarr
+from image.formats import validate_or_enforce_zarr, output_zarr_to_directory
 from operations.delegated import run_delegated
 from workflow.workflows import process_workflow, run_workflow
 
@@ -37,15 +37,17 @@ def dask_setup(execution_config_path: str = None) -> Client | None:
         return client
 
     # Match our execution type
-    match execution_config["type"]:
-        case "SLURM":
-            return build_slurm_cluster(execution_config)
+    # match execution_config["type"]:
+    #     case "SLURM":
+    if execution_config["type"] == "SLURM":
+        return build_slurm_cluster(execution_config)
 
         # TODO: Slurm multi-gpu, local cluster cuda, threads, single thread
         # TODO: Cannot currently support multi-gpu cluster?
 
-        case _:
-            return client
+        # case _:
+    else:
+        return client
 
 
 def run(data_path: str, workflow_json: dict, tile_arrangement: str = None, execution_config_path: str = None, defer_workflow_handling: bool = False):
@@ -76,7 +78,8 @@ def run(data_path: str, workflow_json: dict, tile_arrangement: str = None, execu
     # Defer workflow handling to napari-workflows
     else:
         # Delegate workflow processing
-        run_delegated(workflow_json, data_path, data, tile_arrangement)
+        output = run_delegated(workflow_json, data_path, data, tile_arrangement)
+        output_zarr_to_directory(data_path, "workflow_output.zarr", output)
 
     # Close out the client
     client.close()
