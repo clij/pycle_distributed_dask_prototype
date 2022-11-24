@@ -4,8 +4,8 @@ def run_connected_components_test():
     tile_arrangement = "3,3,1"
     execution_config = "./test_data/slurm_execution_config.json"
 
-    from main import main
-    main(data, workflow, tile_arrangement, execution_config)
+    from main import run
+    run(data, workflow, tile_arrangement, execution_config)
 
 
 def run_gaussian_filter_test():
@@ -15,5 +15,5 @@ def run_gaussian_filter_test():
     tile_arrangement = "3,3,1"
     execution_config = "./test_data/slurm_execution_config.json"
 
-    from main import main
-    main(data, workflow, tile_arrangement, execution_config)
+    from main import run
+    run(data, workflow, tile_arrangement, execution_config)

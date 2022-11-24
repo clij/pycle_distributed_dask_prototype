@@ -2,7 +2,7 @@ import dask.array
 import pyclesperanto_prototype
 
 
-def filter(sigma_x, sigma_y, sigma_z, image):
+def filter(image, sigma_x, sigma_y, sigma_z):
     pyclesperanto_prototype.set_wait_for_kernel_finish(True)
     pyclesperanto_prototype.select_device("RTX")  # Fallback is okay, but we should have this globally configured as a singleton somewhere based on our execution config?
 
@@ -24,7 +24,7 @@ def run_gaussian_filter_parallel(parameters, source_data, tile_config):
 
     # Calculate our overlaps based on Robert's 'rule of thumb' - this is likely to be a value that needs to be assessed for every operation
     depth = (sigma_x * 4, sigma_y * 4, sigma_z * 4)
-    tile_map = dask.array.map_overlap(filter, sigma_x, sigma_y, sigma_z, source_data, depth=depth, boundary='nearest')
+    tile_map = dask.array.map_overlap(filter, source_data, depth=depth, boundary='nearest', sigma_x=sigma_x, sigma_y=sigma_y, sigma_z=sigma_z)
     return tile_map.compute()
 
 
@@ -40,4 +40,4 @@ def run_gaussian_filter_single(parameters, source_data):
     if "sigma_z" in parameters:
         sigma_z = float(parameters.get("sigma_z"))
 
-    return filter(sigma_x, sigma_y, sigma_z, source_data)
+    return filter(source_data, sigma_x, sigma_y, sigma_z)

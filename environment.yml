@@ -5,7 +5,8 @@ dependencies:
   - python=3.10
   - dask
   - dask-jobqueue
-  - dasl-image
+  - dask-image
   - pyclesperanto-prototype
   - zarr
   - ocl-icd-system
+  - napari_workflows
