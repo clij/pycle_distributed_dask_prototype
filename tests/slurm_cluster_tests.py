@@ -26,7 +26,7 @@ from skimage._shared.filters import gaussian
 def run_workflow_test():
     data = "./test_data/blobs.tiff"
     workflow = Workflow()
-    workflow.set("g1", gaussian, "input", sigma=2)
+    workflow.set("g1", gaussian, "input", sigma=2, preserve_range=True)
     workflow.set("output", threshold_otsu, "g1")
     workflow_file_path = "test.yml"
     save_workflow(workflow_file_path, workflow)
