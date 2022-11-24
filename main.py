@@ -50,7 +50,7 @@ def dask_setup(execution_config_path: str = None) -> Client | None:
         return client
 
 
-def run(data_path: str, workflow_json: dict, tile_arrangement: str = None, execution_config_path: str = None, defer_workflow_handling: bool = False):
+def run(data_path: str, workflow: str, tile_arrangement: str = None, execution_config_path: str = None, defer_workflow_handling: bool = False):
     # Munge tile arrangement
     if tile_arrangement:
         tile_arrangement = tile_arrangement.split(",")
@@ -70,7 +70,7 @@ def run(data_path: str, workflow_json: dict, tile_arrangement: str = None, execu
     # Old style handling 'fake' workflows
     if not defer_workflow_handling:
         # Process our workflow
-        directives_map = process_workflow(workflow_json)
+        directives_map = process_workflow(workflow)
 
         # Run the directives against the data
         run_workflow(data_path, data, directives_map, tile_arrangement)
@@ -78,7 +78,7 @@ def run(data_path: str, workflow_json: dict, tile_arrangement: str = None, execu
     # Defer workflow handling to napari-workflows
     else:
         # Delegate workflow processing
-        output = run_delegated(workflow_json, data_path, data, tile_arrangement)
+        output = run_delegated(workflow, data_path, data, tile_arrangement)
         output_zarr_to_directory(data_path, "workflow_output.zarr", output)
 
     # Close out the client
