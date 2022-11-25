@@ -69,6 +69,7 @@ def validate_or_enforce_zarr(source: str, save_path: str = None, chunk_formats: 
         compressor = Blosc(cname='zstd', clevel=3, shuffle=Blosc.BITSHUFFLE)
         zarray = zarr.array(image, chunks=chunk_formats, compressor=compressor)
         zarr.convenience.save(zarr_filename, zarray)
+        zarray = da.from_zarr(zarr_filename, chunks=chunk_formats)
 
     else:
         zarray = da.from_zarr(zarr_filename, chunks=chunk_formats)
