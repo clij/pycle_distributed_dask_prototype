@@ -26,8 +26,8 @@ from skimage._shared.filters import gaussian
 def get_workflow():
     workflow = Workflow()
     workflow.set("g1", gaussian, "input", sigma=2)
-    workflow.set("g2", connected_components_labeling_box, "g1")
-    workflow.set("output", threshold_otsu, "g2")
+    workflow.set("g2", threshold_otsu, "g1")
+    workflow.set("output", connected_components_labeling_box, "g2")
     return workflow
 
 
