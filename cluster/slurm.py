@@ -1,3 +1,4 @@
+import dask
 from dask_jobqueue import SLURMCluster
 from distributed import Client
 
@@ -10,8 +11,11 @@ def build_slurm_cluster(config: dict):
     memory = config.get("memory", "4GB")
     walltime = config.get('walltime', "01:00:00")
     local_directory = config.get('local_directory', '$TMPDIR')
+    temp_directory = config.get('temp_directory', '$TMPDIR')
     job_extras = config.get("job_extra", [])
     job_script_prologue = config.get("env_setup", [])
+
+    dask.config.set({'temporary_directory': temp_directory})
 
     cluster = SLURMCluster(
         queue=queue,
