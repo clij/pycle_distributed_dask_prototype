@@ -51,7 +51,7 @@ def dask_setup(execution_config_path: str = None) -> Client | None:
         return client
 
 
-def run(data_path: str, workflow: str, tile_arrangement: str = None, execution_config_path: str = None, defer_workflow_handling: bool = False):
+def run(data_path: str, workflow, tile_arrangement: str = None, execution_config_path: str = None, defer_workflow_handling: bool = False):
     # Munge tile arrangement
     if tile_arrangement:
         tile_arrangement = tile_arrangement.split(",")
@@ -63,7 +63,7 @@ def run(data_path: str, workflow: str, tile_arrangement: str = None, execution_c
         tile_arrangement = None
 
     # Check file format and alter to zarr if required
-    data_path, data, tile_arrangement = validate_or_enforce_zarr(data_path, chunk_formats=tile_arrangement)
+    data_path, data = validate_or_enforce_zarr(data_path, chunk_formats=tile_arrangement)
 
     # Setup dask to understand our environment
     client = dask_setup(execution_config_path)
@@ -74,12 +74,12 @@ def run(data_path: str, workflow: str, tile_arrangement: str = None, execution_c
         directives_map = process_workflow(workflow)
 
         # Run the directives against the data
-        run_workflow(data_path, data, directives_map, tile_arrangement)
+        run_workflow(data_path, data, directives_map)
 
     # Defer workflow handling to napari-workflows
     else:
         # Delegate workflow processing
-        output = run_delegated(workflow, data_path, data, tile_arrangement)
+        output = run_delegated(workflow, data_path, data)
         imsave(os.path.join(data_path, "workflow_output.tiff"), output)
         # output_zarr_to_directory(data_path, "workflow_output.zarr", output)
 

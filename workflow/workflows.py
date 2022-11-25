@@ -28,7 +28,7 @@ def process_workflow(workflow: dict):
     return directives_map
 
 
-def run_workflow(data_path, data, directives, tile_settings, save_intermediates=False):
+def run_workflow(data_path, data, directives, save_intermediates=False):
     """
     Run the list of ordered directives against the provided dask_array (backed by a zarr)
 
@@ -41,7 +41,7 @@ def run_workflow(data_path, data, directives, tile_settings, save_intermediates=
     counter = 0
     for directive, properties in directives.items():
         # TODO: Non-linear processing? Again this type of DAG deconvolution is best supported by dedicated development
-        data = run_process(data, directive, properties, tile_config=tile_settings)
+        data = run_process(data, directive, properties, tile_config=None)
 
         # Optionally save the intermediates
         if save_intermediates:

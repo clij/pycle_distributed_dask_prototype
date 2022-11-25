@@ -14,7 +14,7 @@ def run_tiled_workflow(data_as_tile, workflow_file=None) -> np.ndarray:
     return np.asarray(workflow.get("output"))
 
 
-def run_delegated(workflow, source_data_path, source_data, tile_config, depth=None):
+def run_delegated(workflow, source_data_path, source_data, depth=None):
     if depth is None:
         tile_map = dask.array.map_blocks(run_tiled_workflow, source_data, dtype=np.ndarray, workflow_file=workflow)
     else:

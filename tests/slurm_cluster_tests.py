@@ -50,3 +50,16 @@ def run_workflow_tiled_test():
     from main import run
     run(data, workflow_file_path, tile_config, execution_config, defer_workflow_handling=True)
 
+
+def run_workflow_sliced_test():
+    data = "./test_data/1channelcells.tif"
+    workflow = Workflow()
+    workflow.set("g1", gaussian, "input", sigma=2)
+    workflow.set("output", threshold_otsu, "g1")
+    workflow_file_path = "test.yml"
+    save_workflow(workflow_file_path, workflow)
+    tile_config = ":,:,1"
+    execution_config = "./test_data/slurm_execution_config.json"
+
+    from main import run
+    run(data, workflow_file_path, tile_config, execution_config, defer_workflow_handling=True)
