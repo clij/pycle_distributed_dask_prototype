@@ -1,0 +1,14 @@
+{
+  "type": "SLURM",
+  "jobs": 2,
+  "queue": "gpu2",
+  "processes": 2,
+  "cores": 2,
+  "job_extra": [
+    "--gres gpu:1"
+  ],
+  "env_setup": [
+    "singularity exec ~/singularity-images/devbio-napari_v0.2.6.sif bash -l",
+  ],
+  "walltime": "01:00:00"
+}
