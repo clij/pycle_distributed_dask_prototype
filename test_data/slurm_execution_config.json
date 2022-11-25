@@ -1,16 +1,14 @@
 {
   "type": "SLURM",
-  "jobs": 4,
-  "queue": "gpu",
+  "jobs": 2,
+  "queue": "gpu2",
   "processes": 2,
-  "cores": 4,
-  "memory": "16GB",
+  "cores": 2,
   "job_extra": [
     "--gres gpu:1"
   ],
   "env_setup": [
-    "ml Anaconda3",
-    "conda activate /camp/stp/ddt/working/smithj1/envs/clijd_dask"
+    "singularity exec ~/singularity-images/devbio-napari_v0.2.6.sif bash -l",
   ],
   "walltime": "01:00:00"
 }

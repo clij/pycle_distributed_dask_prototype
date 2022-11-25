@@ -11,7 +11,7 @@ from operations.delegated import run_delegated
 from workflow.workflows import process_workflow, run_workflow
 
 
-def dask_setup(execution_config_path: str = None) -> Client | None:
+def dask_setup(execution_config_path: str = None) -> Client:
     """
     This function takes an execution configuration file and processes it in such a way that dask can work in a distributed
     manner where required. In the case where no file is provided, default dask scheduling occurs.
