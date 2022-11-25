@@ -60,7 +60,7 @@ def run_workflow_tiled_slice_test():
     workflow = get_workflow()
     workflow_file_path = "test.yml"
     save_workflow(workflow_file_path, workflow)
-    tile_config = "1,5,5"
+    tile_config = "1,50,50"
     execution_config = "./test_data/slurm_execution_config.json"
 
     from main import run
@@ -72,7 +72,7 @@ def run_workflow_tiled_volume_test():
     workflow = get_workflow()
     workflow_file_path = "test.yml"
     save_workflow(workflow_file_path, workflow)
-    tile_config = "5,5,5"
+    tile_config = "5,50,50"
     execution_config = "./test_data/slurm_execution_config.json"
 
     from main import run
