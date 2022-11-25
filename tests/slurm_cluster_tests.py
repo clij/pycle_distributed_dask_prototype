@@ -19,15 +19,21 @@
 #     run(data, workflow, tile_arrangement, execution_config)
 from napari_workflows import Workflow
 from napari_workflows._io_yaml_v1 import save_workflow
-from pyclesperanto_prototype import threshold_otsu
+from pyclesperanto_prototype import threshold_otsu, connected_components_labeling_box
 from skimage._shared.filters import gaussian
+
+
+def get_workflow():
+    workflow = Workflow()
+    workflow.set("g1", gaussian, "input", sigma=2)
+    workflow.set("g2", connected_components_labeling_box, "g1")
+    workflow.set("output", threshold_otsu, "g2")
+    return workflow
 
 
 def run_workflow_test():
     data = "./test_data/blobs.tif"
-    workflow = Workflow()
-    workflow.set("g1", gaussian, "input", sigma=2)
-    workflow.set("output", threshold_otsu, "g1")
+    workflow = get_workflow()
     workflow_file_path = "test.yml"
     save_workflow(workflow_file_path, workflow)
     tile_config = ":,:,1"
@@ -39,9 +45,7 @@ def run_workflow_test():
 
 def run_workflow_tiled_test():
     data = "./test_data/blobs.tif"
-    workflow = Workflow()
-    workflow.set("g1", gaussian, "input", sigma=2)
-    workflow.set("output", threshold_otsu, "g1")
+    workflow = get_workflow()
     workflow_file_path = "test.yml"
     save_workflow(workflow_file_path, workflow)
     tile_config = "5,5,1"
@@ -53,9 +57,7 @@ def run_workflow_tiled_test():
 
 def run_workflow_sliced_test():
     data = "./test_data/1channelcells.tif"
-    workflow = Workflow()
-    workflow.set("g1", gaussian, "input", sigma=2)
-    workflow.set("output", threshold_otsu, "g1")
+    workflow = get_workflow()
     workflow_file_path = "test.yml"
     save_workflow(workflow_file_path, workflow)
     tile_config = ":,:,1"
