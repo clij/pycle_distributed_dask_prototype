@@ -9,6 +9,8 @@ from skimage.io import imread
 
 
 def calculate_chunks(source_image, target_tile_sizes: str):
+    # TODO: Some sort of minimal viable chunk size for zarr. 5,5,1 pixels means we spend ages writing to disk...
+
     # Handle incomplete information
     if target_tile_sizes:
         target_tile_sizes = target_tile_sizes.split(",")

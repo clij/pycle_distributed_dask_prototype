@@ -5,6 +5,7 @@
   "processes": 2,
   "cores": 4,
   "memory": "16GB",
+  "local_directory": "$TMP_DIR",
   "job_extra": [
     "--gres gpu:1"
   ],

@@ -9,6 +9,7 @@ def build_slurm_cluster(config: dict):
     cores = config.get("cores", 1)
     memory = config.get("memory", "4GB")
     walltime = config.get('walltime', "01:00:00")
+    local_directory = config.get('local_directory', '$TMPDIR')
     job_extras = config.get("job_extra", [])
     job_script_prologue = config.get("env_setup", [])
 
@@ -18,6 +19,7 @@ def build_slurm_cluster(config: dict):
         cores=cores,
         memory=memory,
         walltime=walltime,
+        local_directory=local_directory,
         job_extra_directives=job_extras,
         job_script_prologue=job_script_prologue
     )

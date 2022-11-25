@@ -4,6 +4,7 @@
   "queue": "gpu2",
   "processes": 2,
   "cores": 2,
+  "local_directory": "$TMP_DIR",
   "job_extra": [
     "--gres gpu:1"
   ],
