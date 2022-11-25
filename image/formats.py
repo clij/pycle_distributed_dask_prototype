@@ -8,7 +8,17 @@ from numcodecs import Blosc
 from skimage.io import imread
 
 
-def calculate_chunks(source_image, image_counts):
+def calculate_chunks(source_image, target_tile_sizes: str):
+    # Handle incomplete information
+    if target_tile_sizes:
+        target_tile_sizes = target_tile_sizes.split(",")
+        if len(target_tile_sizes) == 1:
+            target_tile_sizes = [target_tile_sizes[0], target_tile_sizes[0], 1]
+        elif len(target_tile_sizes) == 2:
+            target_tile_sizes.append("1")
+    else:
+        target_tile_sizes = None
+
     image_size = source_image.shape
     if len(image_size) == 2:
         image_x_size = image_size[0]
@@ -20,32 +30,19 @@ def calculate_chunks(source_image, image_counts):
         image_y_size = image_size[2]
 
     # Optional chunk size
-    if not image_counts:
+    if not target_tile_sizes:
         if len(image_size) == 2:
             zarr_chunk_formats = (100, 100)
             array_chunk_formats = (image_x_size, image_y_size)
         else:
             zarr_chunk_formats = (1, 100, 100)
-            array_chunk_formats = (image_z_size, image_x_size, image_y_size)
+            array_chunk_formats = (1, image_x_size, image_y_size)  # Default don't operate on 3d chunks
     else:
-        if image_counts[0] == ":":
-            x_size = image_x_size
-        else:
-            x_size = math.ceil(image_x_size / int(image_counts[0]))
-
-        if image_counts[1] == ":":
-            y_size = image_y_size
-        else:
-            y_size = math.ceil(image_y_size / int(image_counts[1]))
+        x_size = image_x_size
+        y_size = image_y_size
 
         if len(image_size) == 3:
-            if len(image_counts) == 3:
-                if image_counts[2] == ":":
-                    z_size = image_z_size
-                else:
-                    z_size = math.ceil(image_z_size / int(image_counts[2]))
-            else:
-                z_size = 1
+            z_size = image_z_size
 
             array_chunk_formats = zarr_chunk_formats = (
                 x_size,
@@ -61,7 +58,7 @@ def calculate_chunks(source_image, image_counts):
     return zarr_chunk_formats, array_chunk_formats
 
 
-def validate_or_enforce_zarr(source: str, save_path: str = None, chunk_formats: list = None) -> [str, da]:
+def validate_or_enforce_zarr(source: str, save_path: str = None, chunk_formats: str = None) -> [str, da]:
     """
     Take a path to a file, check if it is in zarr format, if not convert and save
 

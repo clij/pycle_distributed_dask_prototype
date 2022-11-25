@@ -52,16 +52,6 @@ def dask_setup(execution_config_path: str = None) -> Client | None:
 
 
 def run(data_path: str, workflow, tile_arrangement: str = None, execution_config_path: str = None, defer_workflow_handling: bool = False):
-    # Munge tile arrangement
-    if tile_arrangement:
-        tile_arrangement = tile_arrangement.split(",")
-        if len(tile_arrangement) == 1:
-            tile_arrangement = [tile_arrangement[0], tile_arrangement[0], 1]
-        elif len(tile_arrangement) == 2:
-            tile_arrangement.append("1")
-    else:
-        tile_arrangement = None
-
     # Check file format and alter to zarr if required
     data_path, data = validate_or_enforce_zarr(data_path, chunk_formats=tile_arrangement)
 

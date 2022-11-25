@@ -36,19 +36,7 @@ def run_workflow_test():
     workflow = get_workflow()
     workflow_file_path = "test.yml"
     save_workflow(workflow_file_path, workflow)
-    tile_config = ":,:,1"
-    execution_config = "./test_data/slurm_execution_config.json"
-
-    from main import run
-    run(data, workflow_file_path, tile_config, execution_config, defer_workflow_handling=True)
-
-
-def run_workflow_tiled_test():
-    data = "./test_data/blobs.tif"
-    workflow = get_workflow()
-    workflow_file_path = "test.yml"
-    save_workflow(workflow_file_path, workflow)
-    tile_config = "5,5,1"
+    tile_config = "256,254"
     execution_config = "./test_data/slurm_execution_config.json"
 
     from main import run
@@ -60,7 +48,31 @@ def run_workflow_sliced_test():
     workflow = get_workflow()
     workflow_file_path = "test.yml"
     save_workflow(workflow_file_path, workflow)
-    tile_config = ":,:,1"
+    tile_config = "256,256,1"
+    execution_config = "./test_data/slurm_execution_config.json"
+
+    from main import run
+    run(data, workflow_file_path, tile_config, execution_config, defer_workflow_handling=True)
+
+
+def run_workflow_tiled_slice_test():
+    data = "./test_data/1channelcells.tif"
+    workflow = get_workflow()
+    workflow_file_path = "test.yml"
+    save_workflow(workflow_file_path, workflow)
+    tile_config = "5,5,1"
+    execution_config = "./test_data/slurm_execution_config.json"
+
+    from main import run
+    run(data, workflow_file_path, tile_config, execution_config, defer_workflow_handling=True)
+
+
+def run_workflow_tiled_volume_test():
+    data = "./test_data/1channelcells.tif"
+    workflow = get_workflow()
+    workflow_file_path = "test.yml"
+    save_workflow(workflow_file_path, workflow)
+    tile_config = "5,5,5"
     execution_config = "./test_data/slurm_execution_config.json"
 
     from main import run
