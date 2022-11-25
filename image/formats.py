@@ -13,9 +13,11 @@ def calculate_chunks(source_image, target_tile_sizes: str):
     if target_tile_sizes:
         target_tile_sizes = target_tile_sizes.split(",")
         if len(target_tile_sizes) == 1:
-            target_tile_sizes = [target_tile_sizes[0], target_tile_sizes[0], 1]
+            target_tile_sizes = [1, int(target_tile_sizes[0]), int(target_tile_sizes[0])]
         elif len(target_tile_sizes) == 2:
-            target_tile_sizes.append("1")
+            target_tile_sizes = [1, int(target_tile_sizes[0]), int(target_tile_sizes[1])]
+        else:
+            target_tile_sizes = [int(target_tile_sizes[0]), int(target_tile_sizes[1]), int(target_tile_sizes[2])]
     else:
         target_tile_sizes = None
 
@@ -38,21 +40,17 @@ def calculate_chunks(source_image, target_tile_sizes: str):
             zarr_chunk_formats = (1, 100, 100)
             array_chunk_formats = (1, image_x_size, image_y_size)  # Default don't operate on 3d chunks
     else:
-        x_size = image_x_size
-        y_size = image_y_size
-
         if len(image_size) == 3:
-            z_size = image_z_size
-
             array_chunk_formats = zarr_chunk_formats = (
-                x_size,
-                y_size,
-                z_size
+                target_tile_sizes[0],
+                target_tile_sizes[1],
+                target_tile_sizes[2]
             )
+
         else:
             array_chunk_formats = zarr_chunk_formats = (
-                x_size,
-                y_size,
+                target_tile_sizes[1],
+                target_tile_sizes[2]
             )
 
     return zarr_chunk_formats, array_chunk_formats
