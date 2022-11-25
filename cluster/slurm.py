@@ -1,3 +1,5 @@
+import tempfile
+
 import dask
 from dask_jobqueue import SLURMCluster
 from distributed import Client
@@ -15,6 +17,8 @@ def build_slurm_cluster(config: dict):
     job_extras = config.get("job_extra", [])
     job_script_prologue = config.get("env_setup", [])
 
+    # Some /tmp doesnt map across
+    tempfile.tempdir = temp_directory
     dask.config.set({'temporary_directory': temp_directory})
 
     cluster = SLURMCluster(
