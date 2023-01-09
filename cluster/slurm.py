@@ -31,7 +31,9 @@ def build_slurm_cluster(config: dict):
         job_extra_directives=job_extras,
         job_script_prologue=job_script_prologue
     )
-
+    
     #cluster.adapt(minimum=0, maximum=jobs)
     cluster.scale(jobs)
-    return Client(cluster)
+    client = Client(cluster)
+    client.get_version(check=True)
+    return client
