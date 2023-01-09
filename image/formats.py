@@ -58,7 +58,7 @@ def calculate_chunks(source_image, target_tile_sizes: str):
     return zarr_chunk_formats, array_chunk_formats
 
 
-def validate_or_enforce_zarr(source: str, save_path: str = None, chunk_formats: str = None) -> [str, da]:
+def validate_or_enforce_zarr(source: str, save_path: str = None, chunk_formats: str = None):
     """
     Take a path to a file, check if it is in zarr format, if not convert and save
 
