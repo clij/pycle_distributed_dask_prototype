@@ -48,7 +48,7 @@ def run_workflow_sliced_test():
     workflow = get_workflow()
     workflow_file_path = "test.yml"
     save_workflow(workflow_file_path, workflow)
-    tile_config = "1,256,256"
+    tile_config = "1,256,254"
     execution_config = "./test_data/slurm_execution_config.json"
 
     from main import run
