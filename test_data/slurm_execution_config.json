@@ -7,6 +7,8 @@
   "job_extra": [
     "--gres gpu:1"
   ],
+  "local_directory": "/scratch/ws/0/tkorten-cache",
+  "temp_directory": "/scratch/ws/0/tkorten-cache/mzayct7_",
   "env_setup": [
     "singularity exec --nv -B /etc/OpenCL/ ~/singularity-images/devbio-napari_v0.2.8.sif \\"
   ],
