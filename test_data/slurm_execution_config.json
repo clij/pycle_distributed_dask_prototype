@@ -10,7 +10,7 @@
   "local_directory": "/scratch/ws/0/tkorten-cache",
   "temp_directory": "/scratch/ws/0/tkorten-cache/mzayct7_",
   "env_setup": [
-    "singularity exec --nv -B /etc/OpenCL/ ~/singularity-images/devbio-napari_v0.2.8.sif \\"
+    "singularity exec --nv -B /etc/OpenCL/ -B /home/h4/tkorten/ -B /home/h4/tkorten/.ssh:/.ssh -B /projects -B /scratch ~/singularity-images/devbio-napari_v0.2.8.sif \\"
   ],
   "walltime": "01:00:00"
 }
